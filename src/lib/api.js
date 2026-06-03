@@ -1,8 +1,21 @@
 import axios from "axios";
 
 // API setup
-const API_URL =
-  (typeof import.meta !== "undefined" && import.meta.env?.VITE_API_URL) || "";
+const DEFAULT_API_URL = "https://api.thekeysvibe.com/api";
+
+function normalizeApiUrl(value) {
+  const url = String(value ?? "").trim();
+
+  if (!url || url === "undefined" || url === "null") {
+    return DEFAULT_API_URL;
+  }
+
+  return url.replace(/\/+$/, "");
+}
+
+const API_URL = normalizeApiUrl(
+  typeof import.meta !== "undefined" ? import.meta.env?.VITE_API_URL : "",
+);
 
 const http = axios.create({
   baseURL: API_URL,
